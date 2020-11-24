@@ -1,0 +1,2 @@
+# GenericClassLibrary
+Wrapper of EF

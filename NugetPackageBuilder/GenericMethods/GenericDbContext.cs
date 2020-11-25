@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,6 @@ namespace ShivOhm.Infrastructure
 {
     public class GenericDbContext : DbContext
     {
-
         public GenericDbContext(DbContextOptions<GenericDbContext> options) : base(options)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +22,27 @@ namespace ShivOhm.Infrastructure
                     {
                         TableAttribute[] TableName = (TableAttribute[])Attribute.GetCustomAttributes(objentity, typeof(TableAttribute));
                         modelBuilder.Entity(objentity).ToTable(TableName.FirstOrDefault()?.TableName);
+
+                        List<PropertyInfo> prop = objentity.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.GetCustomAttributes(typeof(ExcludeColumnAttribute), false).Count() > 0).ToList();
+                        if (prop.Any())
+                        {
+                            foreach (PropertyInfo propertyInfo in prop)
+                            {
+                                ExcludeColumnAttribute AttExcluded = (ExcludeColumnAttribute)Attribute.GetCustomAttributes(propertyInfo, typeof(ExcludeColumnAttribute)).FirstOrDefault();
+                                if (!AttExcluded.AllowAdd)
+                                {
+                                    modelBuilder.Entity(objentity).Property(propertyInfo.Name).Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);                                    
+                                }
+                                if (!AttExcluded.AllowUpdate)
+                                {
+                                    modelBuilder.Entity(objentity).Property(propertyInfo.Name).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+                                }
+                                if (!AttExcluded.AllowRead)
+                                {
+                                    modelBuilder.Entity(objentity).Ignore(propertyInfo.Name);
+                                }
+                            }
+                        }
                     }
                 }
             }

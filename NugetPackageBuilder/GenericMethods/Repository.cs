@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -47,9 +47,7 @@ namespace ShivOhm.Infrastructure
                         dbEntry.Property(includeProperty).IsModified = true;
                     }
                 }
-                else
-                    dbSet.Update(entity);
-
+                dbSet.Update(entity);
                 dbcontext.SaveChanges();
             }
             catch (Exception Ex)
@@ -70,9 +68,8 @@ namespace ShivOhm.Infrastructure
                         dbEntry.Property(includeProperty).IsModified = true;
                     }
                 }
-                else
-                    dbSet.Update(entity);
 
+                dbSet.Update(entity);
                 dbcontext.SaveChanges();
             }
             catch (Exception Ex)

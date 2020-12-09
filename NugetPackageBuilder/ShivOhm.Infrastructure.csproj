@@ -5,14 +5,21 @@
     <PackageId>ShivOhm.Infrastructure</PackageId>
     <Authors>ShivOhm</Authors>
     <Product>ShivOhm.Infrastructure</Product>
-    <Description>Wrapper On EntityFramework</Description>
+    <Description>This Infrastrucuture includes EF Core, Logger ,Swagger, Fluent Migrator in Default.
+Use can directly use it with any project.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>First Release To Check The Working Behaviour, Add Attribute For Table</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="FluentMigrator" Version="3.2.9" />
+    <PackageReference Include="FluentMigrator.Abstractions" Version="3.2.9" />
+    <PackageReference Include="FluentMigrator.Console" Version="3.2.9" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.9" />
+    <PackageReference Include="FluentMigrator.Runner.Core" Version="3.2.9" />
+    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="3.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />

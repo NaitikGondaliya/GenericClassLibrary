@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Net;
 
 namespace ShivOhm.Infrastructure
 {
     public static class ExceptionMiddlewareExtension
     {
-        public static void ConfigureApplication(this IApplicationBuilder app, ILog logger)
+        public static void ConfigureApplication(this IApplicationBuilder app, ILog logger, bool Autorun, InfraEnums.MigrationType? MigrationType = null, long? VersionNo = null)
         {
             app.UseExceptionHandler(appError =>
             {
@@ -37,7 +38,7 @@ namespace ShivOhm.Infrastructure
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", string.Empty);
                 options.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-                options.DefaultModelsExpandDepth(-1);                
+                options.DefaultModelsExpandDepth(-1);
             });
 
             app.UseHttpsRedirection();
@@ -47,6 +48,17 @@ namespace ShivOhm.Infrastructure
             {
                 endpoints.MapControllers();
             });
+            if (Autorun)
+            {
+                if (MigrationType==InfraEnums.MigrationType.Up)
+                {
+                    app.Migrate();
+                }
+                else
+                {
+                    app.MigrateDown(Convert.ToInt64(VersionNo));
+                }
+            }
         }
     }
 }
